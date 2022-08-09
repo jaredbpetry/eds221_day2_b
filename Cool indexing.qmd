@@ -149,7 +149,7 @@ df_1 <- data.frame(topping, filling, price)
 df_1
 ```
 
-Now if you check the class of this, it returns dataframe... where the last ones were list class
+Now if you check the class of this, it returns data frame... where the last ones were list class
 
 Can also make a data frame like this:
 
