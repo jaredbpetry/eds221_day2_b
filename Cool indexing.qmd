@@ -1,0 +1,175 @@
+---
+title: "Day 2 afternoon computational"
+format: html
+editor: visual
+execute: 
+  warning: false
+  message: false
+---
+
+```{r}
+library(tidyverse)
+```
+
+## More indexing 
+
+```{r}
+#----For loops laying the foundation 
+
+cars <- c("blue", "orange", "white")
+cars[1]
+
+i <- seq(1:2)
+cars [i]
+
+
+```
+
+You can assign new values based on position
+
+```{r}
+cars[3] <- "yellow"
+cars
+```
+
+### More Matrices 
+
+```{r}
+#-----wrap a vector into a matrix by rows and column 
+#-----byrow argument being false means that it will wrap by column 1, then column 2 
+
+fish_size <- matrix(c(34, 86, 99, 55), ncol = 2, nrow = 2, byrow = FALSE)
+fish_size
+
+class(fish_size)
+
+#----- Example indexing 
+fish_size[1, 2]
+fish_size[2,2]
+
+#-----check the type ... expecting double 
+typeof(fish_size)
+
+```
+
+what happens if we create a matrix with different types of data?
+
+```{r}
+
+fish_type <- matrix(c("trout", 86, 99, 55L), ncol = 2, nrow = 2, byrow = FALSE)
+fish_type
+
+#-----numerics have now been coerced to characters 
+class(fish_type)
+typeof(fish_type)
+
+#-----[2,0] means take 2nd row but keep all columns 
+fish_size[2,]
+#----- returns all columns but filters by second row
+
+#-----now let's return all rows but filter by column 
+fish_size[,1]
+
+```
+
+### Lists 
+
+reminder: A list combines vectors that can be of different length and type
+
+```{r}
+
+urchins <- list("blue", c(1, 2, 3), c("a cat", "a dog"), 5L)
+
+urchins
+
+#----- how to access the different components: use the tricky []
+#----- the first ex will just regurgitate the list that is within the list, however the latter will give you whats in the list, which are characters ... I think that i like the $ method better
+
+ex1 <- urchins[3]
+
+class(ex1)
+
+ex2 <- urchins[[3]]
+
+class(ex2)
+
+```
+
+### Make a named list 
+
+```{r}
+
+tacos <- list(topping = c("onion", "cilantro", "guacamole"), 
+              filling = c("beans", "meat", "veggies"), 
+              price = c(6.75, 8.25, 9.50))
+
+#-----notice this convention: use = within function and assignment operator to store as a final object outside of a function 
+
+tacos
+
+#----using the dollar sign to index by name!
+
+tacos$filling[3]
+```
+
+### T-test on  significance between two groups
+
+do i have enough evidence to make me think that these are taken from two populations with different means... null hypoth is that they come from the same population (same mean)
+
+```{r}
+
+a <- c(1, 2, 3)
+
+b <- c(4,5,6)
+
+my_ttest <- t.test(a, b)
+my_ttest
+
+#----- this is great: index by just one of the output values 
+
+my_ttest$p.value
+
+
+```
+
+## use in-line code instead 
+
+#### The second value of the vector 'filling' within the list 'tacos' is `r tacos$filling[2]`
+
+the above did not work ... look it up later
+
+## Put that list 'tacos' into a dataframe
+
+```{r}
+topping <- c("onion", "cilantro", "guacamole")
+filling <- c ("beans", "meat", "veggies")
+price <- c(6.75, 8.25, 9.50)
+
+df_1 <- data.frame(topping, filling, price)
+df_1
+```
+
+Now if you check the class of this, it returns dataframe... where the last ones were list class
+
+Can also make a data frame like this:
+
+```{r}
+
+df_ex2 <- data.frame(topping = c("yeah", "oh", "sure"), filling = c("water", "mice", "pig"), price = c(1, 2, 3))
+df_ex2
+
+#-----or you could even do this ~~~called a tribble
+#------allows you to write out the info in the same organization that you would expect to see it in the dataframe
+#when you call it back it also returns some other information
+
+df_ex_3 <- tribble(
+  ~topping, ~filling, ~price, 
+  "avo", "steak", 4, 
+  "ranch", "chicken", 5
+)
+df_ex_3
+
+#----- and you can still index it just the same 
+
+df_ex_3$topping[2]
+```
